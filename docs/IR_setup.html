@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IR in Raspbian &#8212; raspi AC control  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Schematic" href="circuit_schematic.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          RasPi AC Controller</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Contents <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="circuit_schematic.html">Schematic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="circuit_schematic.html#parts-list">Parts list</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">IR in Raspbian</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#record-signals-from-remote">Record signals from remote</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="ir-in-raspbian">
+<h1>IR in Raspbian<a class="headerlink" href="#ir-in-raspbian" title="Permalink to this headline">¶</a></h1>
+<p>With the latest Raspbian software in 2021, the recommended module to handle IR signal is gpio-ir instead of LIRC.</p>
+<p>add the following lines to the end of <code class="code bash docutils literal notranslate"><span class="pre">/boot/config.txt</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">dtoverlay</span><span class="o">=</span>gpio-ir,gpio_pin<span class="o">=</span><span class="m">24</span>
+<span class="nv">dtoverlay</span><span class="o">=</span>gpio-ir-tx,gpio_pin<span class="o">=</span><span class="m">23</span>
+</pre></div>
+</div>
+<p>install <code class="code bash docutils literal notranslate"><span class="pre">ir-keytable</span></code> and then reboot.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install ir-keytable
+sudo shutdown -r now
+</pre></div>
+</div>
+<p>after the reboot, you should see following;</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ls -l /dev/lirc*
+crw-rw---- <span class="m">1</span> root video <span class="m">251</span>, <span class="m">0</span> Aug <span class="m">22</span> <span class="m">17</span>:20 /dev/lirc0
+crw-rw---- <span class="m">1</span> root video <span class="m">251</span>, <span class="m">1</span> Aug <span class="m">22</span> <span class="m">17</span>:20 /dev/lirc1
+</pre></div>
+</div>
+<p>We shall use <cite>ir-ctl</cite> command for recording and playing back the AC remote. Air conditioner remotes send every bit of data at each keypress, so the strategy and automation intended for TV remotes will not work.</p>
+<p>For additional info;</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ir-ctl -f
+Receive features /dev/lirc0:
+ - Device cannot receive
+Send features /dev/lirc0:
+ - Device can send raw IR
+ - IR scancode encoder
+ - Set carrier
+ - Set duty cycle
+</pre></div>
+</div>
+<p>This tells me that ir-ctl will use /dev/lirc0 by default, and it is the IR LED.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ir-ctl -d /dev/lirc1 -f
+Receive features /dev/lirc1:
+ - Device can receive raw IR
+ - Can report decoded scancodes and protocol
+ - Can <span class="nb">set</span> receiving timeout min:1 microseconds max:1250000 microseconds
+Send features /dev/lirc1:
+ - Device cannot send
+</pre></div>
+</div>
+<p>This tells me that /dev/lirc1 is the receiver.</p>
+<div class="section" id="record-signals-from-remote">
+<h2>Record signals from remote<a class="headerlink" href="#record-signals-from-remote" title="Permalink to this headline">¶</a></h2>
+<p>You can record the IR signal from the remote using the following command</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ir-ctl -d /dev/lirc1 -r -t <span class="m">1250000</span> &gt;Remote_command.txt
+</pre></div>
+</div>
+<p>This will read the pulse and space data from the remote to the Remote_command file.</p>
+<p>The -d parameter tells ir-ctl command use /dev/lirc1 to read.</p>
+<p>The -r parameter is for receiving</p>
+<p>The -t command is for timeout. I set the maximum possible due to amount of data AC remote sends.</p>
+<p>Press the power button exactly once, then exit by pressing CTRL+C on the keyboard.</p>
+<p>You can edit the created file, and remove the <cite>timeout</cite> line, in order to reduce the number of error logs.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="_sources/IR_setup.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, obm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
