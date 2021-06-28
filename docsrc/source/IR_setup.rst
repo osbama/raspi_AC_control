@@ -85,3 +85,11 @@ The -t command is for timeout. I set the maximum possible due to amount of data 
 Press the power button exactly once, then exit by pressing CTRL+C on the keyboard.
 
 You can edit the created file, and remove the `timeout` line, in order to reduce the number of error logs.
+
+
+.. warning ::
+   Raw recording of IR sensor data is extremely sensitive to the environment. Care must be taken to prevent stray
+   IR radiation from interfering with the recording. For this purpose, I recommend placing the remote very close
+   to the receiver, and covering the setup with a thick material to provide shade from ambient IR. You might need 
+   to repeat the process a few times until every part of the protocol is captured. 
+   

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adafruit MPL115A2 Temp/Pressure sensor &#8212; raspi AC control  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setting up for automatic start" href="automatic_start.html" />
+    <link rel="prev" title="IR in Raspbian" href="IR_setup.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          RasPi AC Controller</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Contents <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="circuit_schematic.html">Schematic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="circuit_schematic.html#parts-list">Parts list</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="IR_setup.html">IR in Raspbian</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="IR_setup.html#record-signals-from-remote">Record signals from remote</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Adafruit MPL115A2 Temp/Pressure sensor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#original-post-for-interfacing-with-the-mpl115a2-sensor-in-python">Original post for interfacing with the MPL115A2 sensor in Python</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="automatic_start.html">Setting up for automatic start</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="adafruit-mpl115a2-temp-pressure-sensor">
+<h1>Adafruit MPL115A2 Temp/Pressure sensor<a class="headerlink" href="#adafruit-mpl115a2-temp-pressure-sensor" title="Permalink to this headline">¶</a></h1>
+<p>This project uses a <a class="reference external" href="https://www.adafruit.com/product/992">Adafruit MPL115A2 Temp/Pressure sensor</a> . This sensor is intended for Arduino, and Adafruit does not share a method for interfacing with it using Raspberry Pi. Luckily I found someone that did the heavy lifting, and adapted the <cite>ENV/I2C_MPL115A2_driver.py</cite> from his code. The original post is below.</p>
+<div class="section" id="original-post-for-interfacing-with-the-mpl115a2-sensor-in-python">
+<h2>Original post for interfacing with the MPL115A2 sensor in Python<a class="headerlink" href="#original-post-for-interfacing-with-the-mpl115a2-sensor-in-python" title="Permalink to this headline">¶</a></h2>
+<p>The following is duplicated from <a class="reference external" href="https://www.raspberrypi.org/forums/viewtopic.php?t=91185">Phillip’s post in raspberrypi.org</a>.</p>
+<p>The documentation that comes with the MPL115A2 temperature and pressure sensor from Adafruit only gives C code for Arduino, which is less useful than might have been hoped. I’ve searched in vain for Python code for the Raspberry Pi.</p>
+<p>After quite a long slog, I think I have it working. Gotchas along the way were the fact that SMBus function read_word_data() appears to assume little-endian data whereas the device presents it big-endian (SMBus documentation leaves quite a lot to be desired), and the knotty little problem of how to convert 16 bits 2’s complement presented as a long into a float. The MPL115A2 datasheet was not exactly written for dummies, and I still can’t figure how the definition of coefficient c12 corresponds with how you in fact have to interpret it.</p>
+<p>Anyway here’s my code. This post is not really asking a question (unless anyone can suggest any improvements or bug fixes), but rather in the hope that the next person trying to do it might have more success in a Google search than I did.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">smbus</span>
+
+<span class="n">bus</span> <span class="o">=</span> <span class="n">smbus</span><span class="o">.</span><span class="n">SMBus</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">addr</span> <span class="o">=</span> <span class="mh">0x60</span>
+
+<span class="c1"># a0: 16 bits - 1 sign, 12 int, 3 frac</span>
+<span class="n">a0</span> <span class="o">=</span> <span class="p">(</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">)</span> <span class="o">&lt;&lt;</span><span class="mi">8</span><span class="p">)</span> <span class="o">|</span> \
+      <span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">a0</span> <span class="o">&amp;</span> <span class="mh">0x8000</span><span class="p">:</span>
+    <span class="n">a0d</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="o">~</span><span class="n">a0</span> <span class="o">&amp;</span> <span class="mh">0xffff</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">a0d</span> <span class="o">=</span> <span class="n">a0</span>
+<span class="n">a0f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">a0d</span><span class="p">)</span> <span class="o">/</span> <span class="mf">8.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a0 = 0x</span><span class="si">%4x</span><span class="s2"> </span><span class="si">%5d</span><span class="s2"> </span><span class="si">%4.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">a0d</span><span class="p">,</span> <span class="n">a0f</span><span class="p">))</span>
+
+<span class="c1"># b1: 16 bits - 1 sign, 2 int, 13 frac</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="p">(</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span> <span class="p">)</span> <span class="o">|</span> \
+      <span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x07</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">b1</span> <span class="o">&amp;</span> <span class="mh">0x8000</span><span class="p">:</span>
+    <span class="n">b1d</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="o">~</span><span class="n">b1</span> <span class="o">&amp;</span> <span class="mh">0xffff</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">b1d</span> <span class="o">=</span> <span class="n">b1</span>
+<span class="n">b1f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">b1d</span><span class="p">)</span> <span class="o">/</span> <span class="mf">8192.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b1 = 0x</span><span class="si">%4x</span><span class="s2"> </span><span class="si">%5d</span><span class="s2"> </span><span class="si">%1.5f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="n">b1d</span><span class="p">,</span> <span class="n">b1f</span><span class="p">))</span>
+
+<span class="c1"># b2: 16 bits - 1 sign, 1 int, 14 frac</span>
+<span class="n">b2</span> <span class="o">=</span> <span class="p">(</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x08</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> \
+      <span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x09</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">b2</span> <span class="o">&amp;</span> <span class="mh">0x8000</span><span class="p">:</span>
+    <span class="n">b2d</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="o">~</span><span class="n">b2</span> <span class="o">&amp;</span> <span class="mh">0xffff</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">b2d</span> <span class="o">=</span> <span class="n">b2</span>
+<span class="n">b2f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">b2d</span><span class="p">)</span> <span class="o">/</span> <span class="mf">16384.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b2 = 0x</span><span class="si">%4x</span><span class="s2"> </span><span class="si">%5d</span><span class="s2"> </span><span class="si">%1.5f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">b2</span><span class="p">,</span> <span class="n">b2d</span><span class="p">,</span> <span class="n">b2f</span><span class="p">))</span>
+
+<span class="c1"># c12: 14 bits - 1 sign, 0 int, 13 frac</span>
+<span class="c1"># (Documentation in the datasheet is poor on this.)</span>
+<span class="n">c12</span> <span class="o">=</span> <span class="p">(</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x0a</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> \
+       <span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x0b</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">c12</span> <span class="o">&amp;</span> <span class="mh">0x8000</span><span class="p">:</span>
+    <span class="n">c12d</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="o">~</span><span class="n">c12</span> <span class="o">&amp;</span> <span class="mh">0xffff</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">c12d</span> <span class="o">=</span> <span class="n">c12</span>
+<span class="n">c12f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">c12d</span><span class="p">)</span> <span class="o">/</span> <span class="mf">16777216.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;c12 = 0x</span><span class="si">%4x</span><span class="s2"> </span><span class="si">%5d</span><span class="s2"> </span><span class="si">%1.5f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c12</span><span class="p">,</span> <span class="n">c12d</span><span class="p">,</span> <span class="n">c12f</span><span class="p">))</span>
+
+<span class="c1"># Start conversion and wait 3mS</span>
+<span class="n">bus</span><span class="o">.</span><span class="n">write_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x12</span><span class="p">,</span> <span class="mh">0x0</span><span class="p">)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.003</span><span class="p">)</span>
+
+<span class="n">rawpres</span> <span class="o">=</span> <span class="p">(</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">|</span> \
+       <span class="p">(</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">rawtemp</span> <span class="o">=</span> <span class="p">(</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">|</span> \
+       <span class="p">(</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Raw pres = 0x</span><span class="si">%3x</span><span class="s2"> </span><span class="si">%4d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rawpres</span><span class="p">,</span> <span class="n">rawpres</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw temp = 0x</span><span class="si">%3x</span><span class="s2"> </span><span class="si">%4d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rawtemp</span><span class="p">,</span> <span class="n">rawtemp</span><span class="p">))</span>
+
+<span class="n">pcomp</span> <span class="o">=</span> <span class="n">a0f</span> <span class="o">+</span> <span class="p">(</span><span class="n">b1f</span> <span class="o">+</span> <span class="n">c12f</span> <span class="o">*</span> <span class="n">rawtemp</span><span class="p">)</span> <span class="o">*</span> <span class="n">rawpres</span> <span class="o">+</span> <span class="n">b2f</span> <span class="o">*</span> <span class="n">rawtemp</span>
+<span class="n">pkpa</span> <span class="o">=</span> <span class="n">pcomp</span> <span class="o">/</span> <span class="mf">15.737</span> <span class="o">+</span> <span class="mi">50</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pres = </span><span class="si">%3.2f</span><span class="s2"> kPa&quot;</span> <span class="o">%</span> <span class="n">pkpa</span><span class="p">)</span>
+
+<span class="n">temp</span> <span class="o">=</span> <span class="mf">25.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">rawtemp</span> <span class="o">-</span> <span class="mf">498.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">5.35</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Temp = </span><span class="si">%3.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="_sources/MPL115A2-Temp-Pressure.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, obm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

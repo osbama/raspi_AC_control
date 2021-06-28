@@ -19,7 +19,7 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Setting up for automatic start" href="automatic_start.html" />
+    <link rel="next" title="Adafruit MPL115A2 Temp/Pressure sensor" href="MPL115A2-Temp-Pressure.html" />
     <link rel="prev" title="Schematic" href="circuit_schematic.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -66,6 +66,10 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">IR in Raspbian</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#record-signals-from-remote">Record signals from remote</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MPL115A2-Temp-Pressure.html">Adafruit MPL115A2 Temp/Pressure sensor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MPL115A2-Temp-Pressure.html#original-post-for-interfacing-with-the-mpl115a2-sensor-in-python">Original post for interfacing with the MPL115A2 sensor in Python</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="automatic_start.html">Setting up for automatic start</a></li>
@@ -152,6 +156,13 @@ Send features /dev/lirc1:
 <p>The -t command is for timeout. I set the maximum possible due to amount of data AC remote sends.</p>
 <p>Press the power button exactly once, then exit by pressing CTRL+C on the keyboard.</p>
 <p>You can edit the created file, and remove the <cite>timeout</cite> line, in order to reduce the number of error logs.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Raw recording of IR sensor data is extremely sensitive to the environment. Care must be taken to prevent stray
+IR radiation from interfering with the recording. For this purpose, I recommend placing the remote very close
+to the receiver, and covering the setup with a thick material to provide shade from ambient IR. You might need
+to repeat the process a few times until every part of the protocol is captured.</p>
+</div>
 </div>
 </div>
 

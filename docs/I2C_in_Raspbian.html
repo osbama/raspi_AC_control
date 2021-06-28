@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; raspi AC control  documentation</title>
+    <title>I2C in Raspbian &#8212; raspi AC control  documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -17,8 +17,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="index" title="Index" href="#" />
+    <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Adafruit MPL115A2 Temp/Pressure sensor" href="MPL115A2-Temp-Pressure.html" />
+    <link rel="prev" title="IR in Raspbian" href="IR_setup.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -57,7 +59,7 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="circuit_schematic.html">Schematic</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="circuit_schematic.html#parts-list">Parts list</a></li>
 </ul>
@@ -66,10 +68,10 @@
 <li class="toctree-l2"><a class="reference internal" href="IR_setup.html#record-signals-from-remote">Record signals from remote</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="I2C_in_Raspbian.html">I2C in Raspbian</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="I2C_in_Raspbian.html#enabling-i2c">Enabling I2C</a></li>
-<li class="toctree-l2"><a class="reference internal" href="I2C_in_Raspbian.html#scanning-the-i2c-addresses">Scanning the I2C addresses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="I2C_in_Raspbian.html#interfacing-with-i2c-peripherals-from-python">Interfacing with I2C peripherals from Python</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">I2C in Raspbian</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#enabling-i2c">Enabling I2C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scanning-the-i2c-addresses">Scanning the I2C addresses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interfacing-with-i2c-peripherals-from-python">Interfacing with I2C peripherals from Python</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="MPL115A2-Temp-Pressure.html">Adafruit MPL115A2 Temp/Pressure sensor</a><ul>
@@ -106,11 +108,22 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
+  <div class="section" id="i2c-in-raspbian">
+<h1>I2C in Raspbian<a class="headerlink" href="#i2c-in-raspbian" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://hackaday.io/project/173847-ups-lite">UPS Lite</a> ; <a class="reference external" href="https://www.adafruit.com/product/992">Adafruit MPL115A2 Temp/Pressure sensor</a> and <a class="reference external" href="https://funduino.de/nr-19-i%C2%B2c-display">2x16 I2C LCD</a> use I2C protocol to communicate with the Raspberry Pi.</p>
+<div class="section" id="enabling-i2c">
+<h2>Enabling I2C<a class="headerlink" href="#enabling-i2c" title="Permalink to this headline">¶</a></h2>
+<p>First, log in to your Pi and enter <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">raspi-config</span></code> to access the configuration menu. Then arrow down and select “Advanced Settings”. Arrow down and select “I2C Enable/Disable automatic loading” Choose “Yes” at the next prompt, exit the configuration menu, and reboot the Pi to activate the settings.</p>
+</div>
+<div class="section" id="scanning-the-i2c-addresses">
+<h2>Scanning the I2C addresses<a class="headerlink" href="#scanning-the-i2c-addresses" title="Permalink to this headline">¶</a></h2>
+<p><cite>I2C-tools</cite>, is a program for scanning the I2C address of the connected peripherals. Install it with <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">i2c-tools</span></code>.</p>
+<p>With peripherals connected and I2C bus working use <code class="docutils literal notranslate"><span class="pre">i2cdetect</span> <span class="pre">-y</span> <span class="pre">1</span></code> to scan the I2C bus and the adresses of the peripherals. These are usually preset from factory, and you don’t have control over them.</p>
+</div>
+<div class="section" id="interfacing-with-i2c-peripherals-from-python">
+<h2>Interfacing with I2C peripherals from Python<a class="headerlink" href="#interfacing-with-i2c-peripherals-from-python" title="Permalink to this headline">¶</a></h2>
+<p><cite>SMBUS</cite>, contains the Python library for accessing the I2C bus on the Pi. At the command prompt, enter <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">python3-smbus</span></code>.</p>
+</div>
 </div>
 
 
@@ -125,6 +138,10 @@
       
         <br/>
         
+<div id="sourcelink">
+  <a href="_sources/I2C_in_Raspbian.rst.txt"
+     rel="nofollow">Source</a>
+</div>
       
     </p>
     <p>

@@ -12,6 +12,8 @@ Welcome to raspi AC control's documentation!
 
    circuit_schematic
    IR_setup
+   I2C_in_Raspbian
+   MPL115A2-Temp-Pressure.rst
    automatic_start
 
 
