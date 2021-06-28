@@ -12,6 +12,7 @@ Welcome to raspi AC control's documentation!
 
    circuit_schematic
    IR_setup
+   automatic_start
 
 
 

@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; raspi AC control  documentation</title>
+    <title>Setting up for automatic start &#8212; raspi AC control  documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -17,8 +17,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="index" title="Index" href="#" />
+    <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="IR in Raspbian" href="IR_setup.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -57,7 +58,7 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="circuit_schematic.html">Schematic</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="circuit_schematic.html#parts-list">Parts list</a></li>
 </ul>
@@ -66,7 +67,7 @@
 <li class="toctree-l2"><a class="reference internal" href="IR_setup.html#record-signals-from-remote">Record signals from remote</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="automatic_start.html">Setting up for automatic start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Setting up for automatic start</a></li>
 </ul>
 </ul>
 </li>
@@ -96,11 +97,45 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
+  <div class="section" id="setting-up-for-automatic-start">
+<h1>Setting up for automatic start<a class="headerlink" href="#setting-up-for-automatic-start" title="Permalink to this headline">¶</a></h1>
+<p>After you download your script to your user directory, you can use <cite>systemd</cite> for starting it up automatically.</p>
+<p>Create a new <cite>systemd</cite> unit file called <cite>ac_control.service</cite></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>root@raspberrypi:~# cat /lib/systemd/system/ac_control.service
+</pre></div>
+</div>
+<p>Adding the following text:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>AC control service
+<span class="nv">After</span><span class="o">=</span>multi-user.target
 
-<h1 id="index">Index</h1>
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">Type</span><span class="o">=</span>idle
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/python3 /home/obm/source/environment_control/main.py
 
-<div class="genindex-jumpbox">
- 
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</pre></div>
+</div>
+<p>This defines a new service called <cite>ac_control</cite> and we are requesting that it is launched once the multi-user environment is available. The <cite>ExecStart</cite> parameter is used to specify the command we want to run. The <cite>Type</cite> is set to <cite>idle</cite> to ensure that the <cite>ExecStart</cite> command is run only when everything else has loaded. Note that the paths are absolute and define the complete location of Python as well as the location of our Python script.</p>
+<p>In order to store the script’s text output in a log file you can change the ExecStart line to:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/python3 /home/obm/source/environment_control/main.py &gt; /home/obm/ac_control.log <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</pre></div>
+</div>
+<p>The permission on the unit file needs to be set to 644 :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo chmod <span class="m">644</span> /lib/systemd/system/ac_control.service
+</pre></div>
+</div>
+<p>Now the unit file has been defined we can tell systemd to start it during the boot sequence :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo systemctl daemon-reload
+sudo systemctl <span class="nb">enable</span> ac_control.service
+sudo systemctl start ac_control.service
+</pre></div>
+</div>
+<p>Reboot the Pi and your custom service should run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo reboot
+</pre></div>
+</div>
 </div>
 
 
@@ -115,6 +150,10 @@
       
         <br/>
         
+<div id="sourcelink">
+  <a href="_sources/automatic_start.rst.txt"
+     rel="nofollow">Source</a>
+</div>
       
     </p>
     <p>
