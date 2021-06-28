@@ -16,7 +16,7 @@ Create a new `systemd` unit file called `ac_control.service`
 
 .. code-block :: bash
 
-   root@raspberrypi:~# cat /lib/systemd/system/ac_control.service 
+   sudo vim /lib/systemd/system/ac_control.service 
 
 Adding the following text:
 
