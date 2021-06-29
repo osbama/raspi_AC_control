@@ -3,8 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to raspi AC control's documentation!
-============================================
+
+Welcome to raspi AC control project's documentation!
+========================================================
+
+The source code of this project is `public here <https://github.com/osbama/raspi_AC_control>`_
+
 
 .. toctree::
    :maxdepth: 2
