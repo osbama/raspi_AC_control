@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I2C 2x16 LCD &#8212; raspi AC control  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setting up for automatic start" href="automatic_start.html" />
+    <link rel="prev" title="Adafruit MPL115A2 Temp/Pressure sensor" href="MPL115A2-Temp-Pressure.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          RasPi AC Controller</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Contents <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="circuit_schematic.html">Schematic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="circuit_schematic.html#parts-list">Parts list</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="IR_setup.html">IR in Raspbian</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="IR_setup.html#record-signals-from-remote">Record signals from remote</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="I2C_in_Raspbian.html">I2C in Raspbian</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="I2C_in_Raspbian.html#enabling-i2c">Enabling I2C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="I2C_in_Raspbian.html#scanning-the-i2c-addresses">Scanning the I2C addresses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="I2C_in_Raspbian.html#interfacing-with-i2c-peripherals-from-python">Interfacing with I2C peripherals from Python</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MPL115A2-Temp-Pressure.html">Adafruit MPL115A2 Temp/Pressure sensor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MPL115A2-Temp-Pressure.html#original-post-for-interfacing-with-the-mpl115a2-sensor-in-python">Original post for interfacing with the MPL115A2 sensor in Python</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">I2C 2x16 LCD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#write-to-the-display">Write to the Display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#position-the-text">Position the Text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#clear-the-screen">Clear the Screen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blinking-text">Blinking Text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#print-the-date-and-time">Print the Date and Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scroll-text-right-to-left-continuously">Scroll Text Right to Left Continuously</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="automatic_start.html">Setting up for automatic start</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="i2c-2x16-lcd">
+<h1>I2C 2x16 LCD<a class="headerlink" href="#i2c-2x16-lcd" title="Permalink to this headline">¶</a></h1>
+<p>The following are <a class="reference external" href="https://www.circuitbasics.com/raspberry-pi-i2c-lcd-set-up-and-programming/">excerpts from this article</a></p>
+<p>2x16 LCD with I2C uses only two pins to communicate with Raspberry instead of the 16 in parallel communication. This bus can also be shared with other sensors. In this project I use <a class="reference external" href="https://funduino.de/nr-19-i%C2%B2c-display">2x16 I2C LCD</a></p>
+<p>Connecting an LCD with an I2C backpack is pretty self-explanatory. Connect the SDA pin on the Pi to the SDA pin on the LCD, and the SCL pin on the Pi to the SCL pin on the LCD. The ground and Vcc pins will also need to be connected. Most LCDs can operate with 3.3V, but they’re meant to be run on 5V, so connect it to the 5V pin of the Pi if possible.</p>
+<p><code class="docutils literal notranslate"><span class="pre">i2cdetect</span> <span class="pre">-y</span> <span class="pre">1</span></code> shows the I2C address of my LCD is 27.</p>
+<p>I found a Python I2C library that has a good set of functions and works pretty well. This library was originally posted <a class="reference external" href="http://www.recantha.co.uk/blog/?p=4849">here</a>, then expanded and improved by GitHub user <a class="reference external" href="https://gist.github.com/DenisFromHR/cc863375a6e19dce359d">DenisFromHR</a>. This is in <code class="docutils literal notranslate"><span class="pre">LCD/I2C_LCD_driver.py</span></code> directory.</p>
+<p>There are a couple things you may need to change in the code above, depending on your set up. On line 19 there is a function that defines the port for the I2C bus. Older Raspberry Pi’s used port 0, but newer models use port 1. Unless you have something older than 3, use port 1.</p>
+<p>Next, put the I2C address of your LCD in line 22 of the library code. For example, my I2C address is 27, so I’ll change line 22 to <code class="docutils literal notranslate"><span class="pre">ADDRESS</span> <span class="pre">=</span> <span class="pre">0x27</span></code>.</p>
+<div class="section" id="write-to-the-display">
+<h2>Write to the Display<a class="headerlink" href="#write-to-the-display" title="Permalink to this headline">¶</a></h2>
+<p>The following is a bare minimum “Hello World!” program to demonstrate how to initialize the LCD:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">I2C_LCD_driver</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">mylcd</span> <span class="o">=</span> <span class="n">I2C_LCD_driver</span><span class="o">.</span><span class="n">lcd</span><span class="p">()</span>
+
+<span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_display_string</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="position-the-text">
+<h2>Position the Text<a class="headerlink" href="#position-the-text" title="Permalink to this headline">¶</a></h2>
+<p>The function <code class="docutils literal notranslate"><span class="pre">mylcd.lcd_display_string()</span></code> prints text to the screen and also lets you chose where to position it. The function is used as <cite>mylcd.lcd_display_string(“TEXT TO PRINT”, ROW, COLUMN)`</cite>. For example, the following code prints “Hello World!” to row 2, column 3:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">I2C_LCD_driver</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">mylcd</span> <span class="o">=</span> <span class="n">I2C_LCD_driver</span><span class="o">.</span><span class="n">lcd</span><span class="p">()</span>
+
+<span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_display_string</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>On a 16×2 LCD, the rows are numbered 1 – 2, while the columns are numbered 0 – 15. So to print “Hello World!” at the first column of the top row, you would use mylcd.lcd_display_string(“Hello World!”, 1, 0).</p>
+</div>
+<div class="section" id="clear-the-screen">
+<h2>Clear the Screen<a class="headerlink" href="#clear-the-screen" title="Permalink to this headline">¶</a></h2>
+<p>The function <code class="docutils literal notranslate"><span class="pre">mylcd.lcd_clear()</span></code> clears the screen:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">I2C_LCD_driver</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">mylcd</span> <span class="o">=</span> <span class="n">I2C_LCD_driver</span><span class="o">.</span><span class="n">lcd</span><span class="p">()</span>
+
+<span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_display_string</span><span class="p">(</span><span class="s2">&quot;This is how you&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_clear</span><span class="p">()</span>
+
+<span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_display_string</span><span class="p">(</span><span class="s2">&quot;clear the screen&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_clear</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="blinking-text">
+<h2>Blinking Text<a class="headerlink" href="#blinking-text" title="Permalink to this headline">¶</a></h2>
+<p>We can use a simple while loop with the mylcd.lcd_display_string() and mylcd.lcd_clear() functions to create a continuous blinking text effect:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">I2C_LCD_driver</span>
+<span class="n">mylcd</span> <span class="o">=</span> <span class="n">I2C_LCD_driver</span><span class="o">.</span><span class="n">lcd</span><span class="p">()</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_display_string</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;Hello world!&quot;</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_clear</span><span class="p">()</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">time.sleep()</span></code> function on line 7 to change the time (in seconds) the text stays on. The time the text stays off can be changed in the time.sleep() function on line 9. To end the program, press Ctrl-C.</p>
+</div>
+<div class="section" id="print-the-date-and-time">
+<h2>Print the Date and Time<a class="headerlink" href="#print-the-date-and-time" title="Permalink to this headline">¶</a></h2>
+<p>The following program prints the current date and time to the LCD:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">I2C_LCD_driver</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="n">mylcd</span> <span class="o">=</span> <span class="n">I2C_LCD_driver</span><span class="o">.</span><span class="n">lcd</span><span class="p">()</span>
+
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_display_string</span><span class="p">(</span><span class="s2">&quot;Time: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_display_string</span><span class="p">(</span><span class="s2">&quot;Date: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y&quot;</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="scroll-text-right-to-left-continuously">
+<h2>Scroll Text Right to Left Continuously<a class="headerlink" href="#scroll-text-right-to-left-continuously" title="Permalink to this headline">¶</a></h2>
+<p>This program will scroll a text string from the right side of the LCD to the left side and loop continuously:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">I2C_LCD_driver</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">mylcd</span> <span class="o">=</span> <span class="n">I2C_LCD_driver</span><span class="o">.</span><span class="n">lcd</span><span class="p">()</span>
+
+<span class="n">str_pad</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">16</span>
+<span class="n">my_long_string</span> <span class="o">=</span> <span class="s2">&quot;This is a string that needs to scroll&quot;</span>
+<span class="n">my_long_string</span> <span class="o">=</span> <span class="n">str_pad</span> <span class="o">+</span> <span class="n">my_long_string</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">my_long_string</span><span class="p">)):</span>
+        <span class="n">lcd_text</span> <span class="o">=</span> <span class="n">my_long_string</span><span class="p">[</span><span class="n">i</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">16</span><span class="p">)]</span>
+        <span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_display_string</span><span class="p">(</span><span class="n">lcd_text</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.4</span><span class="p">)</span>
+        <span class="n">mylcd</span><span class="o">.</span><span class="n">lcd_display_string</span><span class="p">(</span><span class="n">str_pad</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="_sources/2x16_LCD.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, obm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

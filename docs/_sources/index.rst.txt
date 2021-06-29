@@ -14,6 +14,7 @@ Welcome to raspi AC control's documentation!
    IR_setup
    I2C_in_Raspbian
    MPL115A2-Temp-Pressure.rst
+   2x16_LCD.rst
    automatic_start
 
 
